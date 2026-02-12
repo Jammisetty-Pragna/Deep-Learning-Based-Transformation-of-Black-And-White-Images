@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Colorization – Pretrained Model</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        input[type="file"] {
+            margin: 10px 0;
+        }
+
+        button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .image-row {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .image-box {
+            text-align: center;
+            margin: 15px;
+        }
+
+        .image-box img {
+            max-width: 300px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .metrics {
+            margin-top: 30px;
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .metrics h3 {
+            margin-top: 0;
+            color: #444;
+        }
+
+        .metrics p {
+            font-size: 16px;
+            margin: 6px 0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #777;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Grayscale Image Colorization</h1>
+
+<div class="container">
+
+    <form action="/colorize" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <br>
+        <button type="submit">Colorize Image</button>
+    </form>
+
+    {% if gray_image and color_image %}
+    <div class="image-row">
+        <div class="image-box">
+            <h3>Input Grayscale Image</h3>
+            <img src="{{ url_for('static', filename=gray_image) }}">
+        </div>
+
+        <div class="image-box">
+            <h3>Colorized Output</h3>
+            <img src="{{ url_for('static', filename=color_image) }}">
+        </div>
+    </div>
+    {% endif %}
+
+    {% if metrics %}
+    <div class="metrics">
+        <h3>Evaluation Metrics</h3>
+        <p><strong>PSNR:</strong> {{ metrics.psnr }}</p>
+        <p><strong>MSE:</strong> {{ metrics.mse }}</p>
+        <p><strong>SSIM:</strong> {{ metrics.ssim }}</p>
+    </div>
+    {% endif %}
+
+</div>
+
+<footer>
+    Pre-trained Caffe Model based Image Colorization | Flask UI
+</footer>
+
+</body>
+</html>
